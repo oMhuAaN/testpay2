@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -30,45 +30,55 @@ import * as WeChat from 'react-native-wechat'
 
 class OButton extends Component {
   render() {
-      return (
-          <TouchableHighlight
-              style={{
-                backgroundColor:'#549490',
-                alignItems:"center",
-                justifyContent:"center",
-                height:40,
-                borderRadius:10,
-                margin:10,
-              }}
-              underlayColor="#a5a5a5"
-              onPress={this.props.onPress}>
-              <Text style={{
-                color:'#FFFFFF'
-              }}>{this.props.text}</Text>
-          </TouchableHighlight>
-      );
+    return (
+      <TouchableHighlight
+        style={{
+          backgroundColor: '#549490',
+          alignItems: "center",
+          justifyContent: "center",
+          height: 40,
+          borderRadius: 10,
+          margin: 10,
+        }}
+        underlayColor="#a5a5a5"
+        onPress={this.props.onPress}>
+        <Text style={{
+          color: '#FFFFFF'
+        }}>{this.props.text}</Text>
+      </TouchableHighlight>
+    );
   }
 }
 
 class ShouYe extends Component {
-  state={
-    url1:'cxcx.mynatapp.cc/test/testCreateOrder',
-    appid:'wx604ebb6e95cc63ed',
-    partnerId:'partnerid',
-    prepayId:'prepayid',
-    nonceStr:'noncestr',
-    timeStamp:'timestamp',
-    package:'package',
-    sign:'sign',
-    appId:'appid',
+  state = {
+    url1: 'cxcx.mynatapp.cc/test/testCreateOrder',
+    appid: 'wx604ebb6e95cc63ed',
+    partnerId: 'partnerid',
+    prepayId: 'prepayid',
+    nonceStr: 'noncestr',
+    timeStamp: 'timestamp',
+    package: 'package',
+    sign: 'sign',
+    appId: 'appid',
+    shareTxt: '我是要分享的文本',
+    shareUrl: 'www.baidu.com',
+    shareUrlTxt: '这是一个百度的链接',
+    shareUrlImg: '没有图片',
+    shareUrlTitle: '分享链接的标题',
+    shareQuanTxt: '要分享到微信朋友圈的文本内容',
+    shareQuanTitle: '分享的标题',
+    shareQuanTitleTxt: '分享的标题内容',
+    shareQuanImg: '分享的标题图片',
+    shareQuanUrl: '分享的url',
   }
-  inputChange(key,value) {
+  inputChange(key, value) {
     this.setState({
-      [key]:value,
+      [key]: value,
     })
   }
   // 微信支付函数
-  payFun = async function(responseJson){
+  payFun = async function (responseJson) {
     try {
       let result = await WeChat.pay({
         partnerId: responseJson[this.state.partnerId],  // 商家向财付通申请的商家id
@@ -80,7 +90,7 @@ class ShouYe extends Component {
         appId: responseJson[this.state.appId]
       });
       Alert.alert('支付成功了')
-      console.log('支付成功了',result)
+      console.log('支付成功了', result)
     } catch (e) {
       if (e instanceof WeChat.WechatError) {
         console.error(e.stack);
@@ -154,15 +164,14 @@ class ShouYe extends Component {
       <View>
         <View style={{ margin: 20 }}>
           <Text style={{
-            fontSize:20,
-            alignSelf:'center',
-          }}>
-            微信接口测试
-                    </Text>
+            fontSize: 20,
+            alignSelf: 'center',
+          }}>微信接口测试</Text>
 
           <View style={{
             borderWidth: 1,
             borderColor: '#703033',
+            marginTop: 10,
           }}>
             <Text style={{
               fontSize: 20,
@@ -179,106 +188,25 @@ class ShouYe extends Component {
                 margin: 10,
               }}
             ></TextInput>
-
-            
-            
           </View>
 
-          <OButton text='微信好友分享的文本'
-            onPress={() => {
-              WeChat.isWXAppInstalled()
-                .then((isInstalled) => {
-                  if (isInstalled) {
-                    WeChat.shareToSession({ type: 'text', description: '测试微信好友分享的文本内容' })
-                      .then((result)=>{
-                        console.log('返回结果',result)
-                        Alert.alert('分享成功');
-                        // Toast.success('分享成功');
-                      })
-                      .catch((error) => {
-                        Alert.alert(error.message);
-                        console.log('catch到错误', error);
-                        // Toast.success('catch到错误');
-                      });
-                  } else {
-                    Alert.alert('请安装微信');
-                  }
-                });
-            }}
-          />
-          <OButton text='微信好友分享链接'
-            onPress={() => {
-              WeChat.isWXAppInstalled()
-                .then((isInstalled) => {
-                  if (isInstalled) {
-                    WeChat.shareToSession({
-                      title: '微信好友测试的链接',
-                      description: '分享的标题内容',
-                      thumbImage: '分享的标题图片',
-                      type: 'news',
-                      webpageUrl: '分享的链接'
-                    })
-                      .catch((error) => {
-                        Alert.alert(error.message);
-                      });
-                  } else {
-                    Alert.alert('请安装微信');
-                  }
-                });
-            }}
-          />
-          <OButton text='微信朋友圈分享的文本'
-            onPress={() => {
-              WeChat.isWXAppInstalled()
-                .then((isInstalled) => {
-                  if (isInstalled) {
-                    WeChat.shareToTimeline({ type: 'text', description: '测试微信朋友圈分享的文本内容' })
-                      .catch((error) => {
-                        Alert.alert(error.message);
-                      });
-                  } else {
-                    Alert.alert('请安装微信');
-                  }
-                });
-            }}
-          />
-          <OButton text='微信朋友圈分享的链接'
-            onPress={() => {
-              WeChat.isWXAppInstalled()
-                .then((isInstalled) => {
-                  if (isInstalled) {
-                    WeChat.shareToTimeline({
-                      title: '分享的标题',
-                      description: '分享的标题内容',
-                      thumbImage: '分享的标题图片',
-                      type: 'news',
-                      webpageUrl: '分享的链接'
-                    })
-                      .catch((error) => {
-                        Alert.alert(error.message);
-                      });
-                  } else {
-                    Alert.alert('请安装微信');
-                  }
-                });
-            }}
-          />
           <View style={{
-            borderWidth:1,
-            borderColor:'#703033',
+            borderWidth: 1,
+            borderColor: '#703033',
+            marginTop: 10,
           }}>
             <Text style={{
-              fontSize:20,
-            }}>支付接口测试：</Text>
+              fontSize: 20,
+            }}>微信支付接口测试：</Text>
             <Text>要调取的后台链接:(不要加https://)</Text>
-            <TextInput 
+            <TextInput
               value={this.state.url1}
-              onChangeText={(text) => this.inputChange('url1',text)}
+              onChangeText={(text) => this.inputChange('url1', text)}
               style={{
-                backgroundColor:'#aaaaaa',
-                borderWidth:1,
-                borderRadius:10,
-                margin:10,
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
               }}
             ></TextInput>
 
@@ -374,10 +302,262 @@ class ShouYe extends Component {
             ></TextInput>
 
             <OButton text='微信支付'
-              onPress={() =>this.toPay()}
+              onPress={() => this.toPay()}
             />
           </View>
-          
+          <View style={{
+            borderWidth: 1,
+            borderColor: '#703033',
+            marginTop: 10,
+          }}>
+            <Text style={{
+              fontSize: 20,
+            }}>分享文本给微信好友接口测试：</Text>
+
+            <Text>要分享的文本：</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareTxt}
+              onChangeText={(text) => this.inputChange('shareTxt', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+
+            <OButton text='分享文本给微信好友'
+              onPress={() => {
+                WeChat.isWXAppInstalled()
+                  .then((isInstalled) => {
+                    if (isInstalled) {
+                      WeChat.shareToSession({ type: 'text', description: this.state.shareTxt })
+                        .then((result) => {
+                          console.log('返回结果', result)
+                          Alert.alert('分享成功');
+                          // Toast.success('分享成功');
+                        })
+                        .catch((error) => {
+                          Alert.alert(error.message);
+                          console.log('catch到错误', error);
+                          // Toast.success('catch到错误');
+                        });
+                    } else {
+                      Alert.alert('请安装微信');
+                    }
+                  });
+              }}
+            />
+          </View>
+
+          <View style={{
+            borderWidth: 1,
+            borderColor: '#703033',
+            marginTop: 10,
+          }}>
+            <Text style={{
+              fontSize: 20,
+            }}>分享链接给微信好友接口测试：</Text>
+            <Text>要分享的链接：</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareUrl}
+              onChangeText={(text) => this.inputChange('shareUrl', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>链接的标题内容：</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareUrlTxt}
+              onChangeText={(text) => this.inputChange('shareUrlTxt', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>链接的标题图片：</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareUrlImg}
+              onChangeText={(text) => this.inputChange('shareUrlImg', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>分享链接的标题：</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareUrlTitle}
+              onChangeText={(text) => this.inputChange('shareUrlTitle', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+
+            <OButton text='分享链接给微信好友'
+              onPress={() => {
+                WeChat.isWXAppInstalled()
+                  .then((isInstalled) => {
+                    if (isInstalled) {
+                      WeChat.shareToSession({
+                        title: this.state.shareUrlTitle,
+                        description: this.state.shareUrlTxt,
+                        thumbImage: this.state.shareUrlImg,
+                        type: 'news',
+                        webpageUrl: this.state.shareUrl,
+                      })
+                        .catch((error) => {
+                          Alert.alert(error.message);
+                        });
+                    } else {
+                      Alert.alert('请安装微信');
+                    }
+                  });
+              }}
+            />
+          </View>
+
+          <View style={{
+            borderWidth: 1,
+            borderColor: '#703033',
+            marginTop: 10,
+          }}>
+            <Text style={{
+              fontSize: 20,
+            }}>分享文本到微信朋友圈接口测试：</Text>
+
+            <Text>要分享到微信朋友圈的文本内容：</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareQuanTxt}
+              onChangeText={(text) => this.inputChange('shareQuanTxt', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+
+            <OButton text='分享文本给微信朋友圈'
+              onPress={() => {
+                WeChat.isWXAppInstalled()
+                  .then((isInstalled) => {
+                    if (isInstalled) {
+                      WeChat.shareToTimeline({
+                        type: 'text',
+                        description: this.state.shareQuanTxt,
+                      })
+                        .catch((error) => {
+                          Alert.alert(error.message);
+                        });
+                    } else {
+                      Alert.alert('请安装微信');
+                    }
+                  });
+              }}
+            />
+          </View>
+
+          <View style={{
+            borderWidth: 1,
+            borderColor: '#703033',
+            marginTop: 10,
+          }}>
+            <Text style={{
+              fontSize: 20,
+            }}>分享文本到微信朋友圈接口测试：</Text>
+
+            <Text>分享的标题：</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareQuanTitle}
+              onChangeText={(text) => this.inputChange('shareQuanTitle', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>分享的标题内容:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareQuanTitleTxt}
+              onChangeText={(text) => this.inputChange('shareQuanTitleTxt', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>分享的标题图片:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareQuanImg}
+              onChangeText={(text) => this.inputChange('shareQuanImg', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>分享的Url:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.shareQuanUrl}
+              onChangeText={(text) => this.inputChange('shareQuanUrl', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+
+            <OButton text='分享链接到微信朋友圈'
+              onPress={() => {
+                WeChat.isWXAppInstalled()
+                  .then((isInstalled) => {
+                    if (isInstalled) {
+                      WeChat.shareToTimeline({
+                        title: this.state.shareQuanTitle,
+                        description: this.state.shareQuanTitleTxt,
+                        thumbImage: this.state.shareQuanImg,
+                        type: 'news',
+                        webpageUrl: this.state.shareQuanUrl
+                      })
+                        .catch((error) => {
+                          Alert.alert(error.message);
+                        });
+                    } else {
+                      Alert.alert('请安装微信');
+                    }
+                  });
+              }}
+            />
+          </View>
+
+
+
+
+
         </View>
       </View>
     )
@@ -388,13 +568,13 @@ class ShouYe extends Component {
 const App: () => React$Node = () => {
   return (
     <>
-      
+
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-          <ShouYe/>
+          <ShouYe />
         </ScrollView>
       </SafeAreaView>
     </>
