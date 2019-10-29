@@ -52,7 +52,7 @@ class OButton extends Component {
 
 class ShouYe extends Component {
   state = {
-    url1: 'cxcx.mynatapp.cc/test/testCreateOrder',
+    url1: 'cxcx.mynatapp.cc/wxpay/createRoomOrder',
     appid: 'wx604ebb6e95cc63ed',
     partnerId: 'partnerid',
     prepayId: 'prepayid',
@@ -71,6 +71,7 @@ class ShouYe extends Component {
     shareQuanTitleTxt: '分享的标题内容',
     shareQuanImg: '分享的标题图片',
     shareQuanUrl: '分享的url',
+    orderNo:''
   }
   inputChange(key, value) {
     this.setState({
@@ -81,13 +82,13 @@ class ShouYe extends Component {
   payFun = async function (responseJson) {
     try {
       let result = await WeChat.pay({
-        partnerId: responseJson[this.state.partnerId],  // 商家向财付通申请的商家id
-        prepayId: responseJson[this.state.prepayId],   // 预支付订单
-        nonceStr: responseJson[this.state.nonceStr],   // 随机串，防重发
-        timeStamp: responseJson[this.state.timeStamp],  // 时间戳，防重发
-        package: responseJson[this.state.package],    // 商家根据财付通文档填写的数据和签名
-        sign: responseJson[this.state.sign], // 商家根据微信开放平台文档对数据做的签名
-        appId: responseJson[this.state.appId]
+        partnerId: responseJson.data[this.state.partnerId],  // 商家向财付通申请的商家id
+        prepayId: responseJson.data[this.state.prepayId],   // 预支付订单
+        nonceStr: responseJson.data[this.state.nonceStr],   // 随机串，防重发
+        timeStamp: responseJson.data[this.state.timeStamp],  // 时间戳，防重发
+        package: responseJson.data[this.state.package],    // 商家根据财付通文档填写的数据和签名
+        sign: responseJson.data[this.state.sign], // 商家根据微信开放平台文档对数据做的签名
+        appId: responseJson.data[this.state.appId]
       });
       Alert.alert('支付成功了')
       console.log('支付成功了', result)
@@ -105,40 +106,55 @@ class ShouYe extends Component {
   toPay = async function () {
     Alert.alert('支付是否成功')
     fetch(`https://${this.state.url1}`, {
-      method: 'GET',//如果为GET方式，则不要添加body，否则会出错    GET/POST
-      header: {//请求头
+      // credentials: 'include',
+      method: 'POST',//如果为GET方式，则不要添加body，否则会出错    GET/POST
+      // header: {//请求头
+      //   // "Content-Type":"application/x-www-form-urlencoded",
+      //   // Accept: 'application/json',
+      //   // 'Content-Type': 'application/json;charset=utf-8',
+      //   // 'Content-Type': 'multipart/form-data',
+      //   // 'Content-Type': 'text/plain',
+      //   'user-agent': 'Mozilla/4.0 MDN Example',
+      //   'content-type': 'application/json'
+      // },
+      // headers: new Headers({
+      //   'Content-Type': 'application/json'
+      // }),
+      // body:JSON.stringify({//请求参数
+      //     'orderNo':this.state.orderNo,
+      //     // 'key2':'value2'
+      // }),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      // body:{//请求参数
-      //     'key1':'value1',
-      //     'key2':'value2'
-      // }
+      body: `orderNo=${this.state.orderNo}`,
     })
       .then((response) => response.json())//将数据转成json,也可以转成 response.text、response.html
       .then((responseJson) => {//获取转化后的数据responseJson、responseText、responseHtml
         // Alert.alert(JSON.stringify(responseJson));
-        console.log(responseJson);
+        console.log('接受参数',responseJson);
         // 检查参数
-        if (!responseJson.partnerid) {
+        if (!responseJson.data.partnerid) {
           Alert.alert('缺少partnerid参数,注意大小写')
           return
         }
-        if (!responseJson.prepayid) {
+        if (!responseJson.data.prepayid) {
           Alert.alert('缺少prepayid参数,注意大小写')
           return
         }
-        if (!responseJson.noncestr) {
+        if (!responseJson.data.noncestr) {
           Alert.alert('缺少noncestr,注意大小写')
           return
         }
-        if (!responseJson.timestamp) {
+        if (!responseJson.data.timestamp) {
           Alert.alert('缺少timestamp,注意大小写')
           return
         }
-        if (!responseJson.package) {
+        if (!responseJson.data.package) {
           Alert.alert('缺少package,注意大小写')
           return
         }
-        if (!responseJson.appid) {
+        if (!responseJson.data.appid) {
           Alert.alert('缺少appid,注意大小写')
           return
         }
@@ -202,6 +218,19 @@ class ShouYe extends Component {
             <TextInput
               value={this.state.url1}
               onChangeText={(text) => this.inputChange('url1', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+
+            <Text>请求参数orderNo:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.orderNo}
+              onChangeText={(text) => this.inputChange('orderNo', text)}
               style={{
                 backgroundColor: '#aaaaaa',
                 borderWidth: 1,
