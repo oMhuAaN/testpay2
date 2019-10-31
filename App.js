@@ -19,13 +19,6 @@ import {
   TextInput,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 import * as WeChat from 'react-native-wechat'
 
 class OButton extends Component {
@@ -53,6 +46,7 @@ class OButton extends Component {
 class ShouYe extends Component {
   state = {
     url1: 'cxcx.mynatapp.cc/wxpay/createRoomOrder',
+    url2: 'cxcx.mynatapp.cc/wxpay/createMeritOrder',
     appid: 'wx604ebb6e95cc63ed',
     partnerId: 'partnerid',
     prepayId: 'prepayid',
@@ -72,12 +66,13 @@ class ShouYe extends Component {
     shareQuanImg: '分享的标题图片',
     shareQuanUrl: '分享的url',
     orderNo: '',
-    key1: '',
-    val1: '',
-    key2: '',
-    val2: '',
-    key3: '',
-    val3: '',
+    productId: '',
+    userNickName: '',
+    money: '',
+    donateName: '',
+    days: '',
+    lamps: '',
+    prayType: '',
   }
   inputChange(key, value) {
     this.setState({
@@ -108,76 +103,22 @@ class ShouYe extends Component {
       console.log('支付失败了', e)
     }
   }
-  // 组织参数的函数
-  KeyVal = () => {
-    let str = `orderNo=${this.state.orderNo}`
-    if (this.state.key1) {
-      str += `&${this.state.key1}=${this.state.val1}`
-    }
-    if (this.state.key2) {
-      str += `&${this.state.key2}=${this.state.val2}`
-    }
-    if (this.state.key3) {
-      str += `&${this.state.key2}=${this.state.val3}`
-    }
-    return str
-  }
-  // 调起微信支付
-  toPay = async function () {
-    Alert.alert('支付是否成功')
+
+  // 调起微信支付一
+  toPay1 = async function () {
+    // Alert.alert('支付是否成功')
     fetch(`https://${this.state.url1}`, {
-      // credentials: 'include',
       method: 'POST',//如果为GET方式，则不要添加body，否则会出错    GET/POST
-      // header: {//请求头
-      //   // "Content-Type":"application/x-www-form-urlencoded",
-      //   // Accept: 'application/json',
-      //   // 'Content-Type': 'application/json;charset=utf-8',
-      //   // 'Content-Type': 'multipart/form-data',
-      //   // 'Content-Type': 'text/plain',
-      //   'user-agent': 'Mozilla/4.0 MDN Example',
-      //   'content-type': 'application/json'
-      // },
-      // headers: new Headers({
-      //   'Content-Type': 'application/json'
-      // }),
-      // body:JSON.stringify({//请求参数
-      //     'orderNo':this.state.orderNo,
-      //     // 'key2':'value2'
-      // }),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsImF1dGhvciI6IkxlbW8gJiBNb2ppdG8iLCJzY29wZSI6WyJhbGwiLCJ3cml0ZSIsInJlYWQiXSwiZXhwIjoxNTczMDMzNDM2LCJ1c2VyaWQiOjMxMjQsImp0aSI6ImIxYzQ5NGVjLWRjYzgtNDU2NC04MzQ5LTI2NjM3YzAzNGQxMSIsImNsaWVudF9pZCI6InN1bm55IiwidXNlcm5hbWUiOiIxNTk1OTE1MDU1MSJ9.e5X8HHuAzzabgKtwzp7kFBQrS38w3KQb_e-iVMiiaX8',
       },
-      body: this.KeyVal(),
+      body: `orderNo=${this.state.orderNo}`,
     })
       .then((response) => response.json())//将数据转成json,也可以转成 response.text、response.html
       .then((responseJson) => {//获取转化后的数据responseJson、responseText、responseHtml
-        // Alert.alert(JSON.stringify(responseJson));
+        Alert.alert(JSON.stringify(responseJson));
         console.log('接受参数', responseJson);
-        // 检查参数
-        if (!responseJson.data.partnerid) {
-          Alert.alert('缺少partnerid参数,注意大小写')
-          return
-        }
-        if (!responseJson.data.prepayid) {
-          Alert.alert('缺少prepayid参数,注意大小写')
-          return
-        }
-        if (!responseJson.data.noncestr) {
-          Alert.alert('缺少noncestr,注意大小写')
-          return
-        }
-        if (!responseJson.data.timestamp) {
-          Alert.alert('缺少timestamp,注意大小写')
-          return
-        }
-        if (!responseJson.data.package) {
-          Alert.alert('缺少package,注意大小写')
-          return
-        }
-        if (!responseJson.data.appid) {
-          Alert.alert('缺少appid,注意大小写')
-          return
-        }
         console.log(responseJson);
         WeChat.isWXAppInstalled()
           .then((isInstalled) => {
@@ -194,6 +135,68 @@ class ShouYe extends Component {
         // console.log(error);
       })
   }
+
+  // 调起微信支付二
+  toPay2 = async function () {
+    // Alert.alert('支付是否成功')
+    fetch(`https://${this.state.url2}`, {
+      // credentials: 'include',
+      method: 'POST',//如果为GET方式，则不要添加body，否则会出错    GET/POST
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsImF1dGhvciI6IkxlbW8gJiBNb2ppdG8iLCJzY29wZSI6WyJhbGwiLCJ3cml0ZSIsInJlYWQiXSwiZXhwIjoxNTczMDMzNDM2LCJ1c2VyaWQiOjMxMjQsImp0aSI6ImIxYzQ5NGVjLWRjYzgtNDU2NC04MzQ5LTI2NjM3YzAzNGQxMSIsImNsaWVudF9pZCI6InN1bm55IiwidXNlcm5hbWUiOiIxNTk1OTE1MDU1MSJ9.e5X8HHuAzzabgKtwzp7kFBQrS38w3KQb_e-iVMiiaX8',
+      }),
+      body: JSON.stringify({//请求参数
+        productId: parseInt(this.state.productId),
+        userNickName: this.state.userNickName,
+        money: parseFloat(this.state.money).toFixed(2),
+        donateName: this.state.donateName,
+        days: parseInt(this.state.days),
+        lamps: parseInt(this.state.lamps),
+        prayType: parseInt(this.state.prayType),
+      }),
+    })
+      .then((response) => response.json())//将数据转成json,也可以转成 response.text、response.html
+      .then((responseJson) => {//获取转化后的数据responseJson、responseText、responseHtml
+        Alert.alert(JSON.stringify(responseJson));
+        console.log('接受参数', responseJson);
+        console.log(responseJson);
+        WeChat.isWXAppInstalled()
+          .then((isInstalled) => {
+            if (isInstalled) {
+              this.payFun(responseJson)
+            } else {
+              Alert.alert('请安装微信');
+            }
+          });
+      })
+      .catch((error) => {
+        // Alert.alert(error.message);
+        Alert.alert('链接错误');
+        // console.log(error);
+      })
+  }
+
+  // 输入框
+  ShuRu = (title, val, key) => {
+    return (
+      <>
+        <Text>{title}</Text>
+        <TextInput
+          // editable={false}
+          value={val}
+          onChangeText={(text) => this.inputChange(key, text)}
+          style={{
+            backgroundColor: '#aaaaaa',
+            borderWidth: 1,
+            borderRadius: 10,
+            margin: 10,
+          }}
+        ></TextInput>
+      </>
+    )
+  }
+
   render() {
     WeChat.registerApp(this.state.appid);
     return (
@@ -233,8 +236,8 @@ class ShouYe extends Component {
           }}>
             <Text style={{
               fontSize: 20,
-            }}>微信支付接口测试：</Text>
-            <Text>要调取的后台链接:(不要加https://)</Text>
+            }}>微信支付接口测试一：</Text>
+            <Text>要调取的后台链接一:(不要加https://)</Text>
             <TextInput
               value={this.state.url1}
               onChangeText={(text) => this.inputChange('url1', text)}
@@ -246,11 +249,25 @@ class ShouYe extends Component {
               }}
             ></TextInput>
 
-            <Text>请求参数orderNo:</Text>
+            {this.ShuRu('请求参数orderNo', this.state.orderNo, 'orderNo')}
+
+            <OButton text='微信支付类型一'
+              onPress={() => this.toPay1()}
+            />
+          </View>
+
+          <View style={{
+            borderWidth: 1,
+            borderColor: '#703033',
+            marginTop: 10,
+          }}>
+            <Text style={{
+              fontSize: 20,
+            }}>微信支付接口测试二：</Text>
+            <Text>要调取的后台链接二:(不要加https://)</Text>
             <TextInput
-              // editable={false}
-              value={this.state.orderNo}
-              onChangeText={(text) => this.inputChange('orderNo', text)}
+              value={this.state.url2}
+              onChangeText={(text) => this.inputChange('url2', text)}
               style={{
                 backgroundColor: '#aaaaaa',
                 borderWidth: 1,
@@ -259,174 +276,16 @@ class ShouYe extends Component {
               }}
             ></TextInput>
 
-            <Text>参数名1:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.key1}
-              onChangeText={(text) => this.inputChange('key1', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>参数值1:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.val1}
-              onChangeText={(text) => this.inputChange('val1', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
+            {this.ShuRu('请求参数productId', this.state.productId, 'productId')}
+            {this.ShuRu('请求参数userNickName', this.state.userNickName, 'userNickName')}
+            {this.ShuRu('请求参数money', this.state.money, 'money')}
+            {this.ShuRu('请求参数donateName', this.state.donateName, 'donateName')}
+            {this.ShuRu('请求参数days', this.state.days, 'days')}
+            {this.ShuRu('请求参数lamps', this.state.lamps, 'lamps')}
+            {this.ShuRu('请求参数prayType', this.state.prayType, 'prayType')}
 
-            <Text>参数名2:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.key2}
-              onChangeText={(text) => this.inputChange('key2', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>参数值2:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.val2}
-              onChangeText={(text) => this.inputChange('val2', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <Text>参数名3:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.key3}
-              onChangeText={(text) => this.inputChange('key3', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>参数值3:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.val3}
-              onChangeText={(text) => this.inputChange('val3', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <Text>partnerId变量名:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.partnerId}
-              onChangeText={(text) => this.inputChange('partnerId', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <Text>prepayId变量名:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.prepayId}
-              onChangeText={(text) => this.inputChange('prepayId', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <Text>nonceStr变量名:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.nonceStr}
-              onChangeText={(text) => this.inputChange('nonceStr', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <Text>timeStamp变量名:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.timeStamp}
-              onChangeText={(text) => this.inputChange('timeStamp', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <Text>package变量名:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.package}
-              onChangeText={(text) => this.inputChange('package', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <Text>sign变量名:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.sign}
-              onChangeText={(text) => this.inputChange('sign', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <Text>appId变量名:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.appId}
-              onChangeText={(text) => this.inputChange('appId', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-
-            <OButton text='微信支付'
-              onPress={() => this.toPay()}
+            <OButton text='微信支付类型二'
+              onPress={() => this.toPay2()}
             />
           </View>
           <View style={{
@@ -438,18 +297,8 @@ class ShouYe extends Component {
               fontSize: 20,
             }}>分享文本给微信好友接口测试：</Text>
 
-            <Text>要分享的文本：</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareTxt}
-              onChangeText={(text) => this.inputChange('shareTxt', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
+            {this.ShuRu('要分享的文本：', this.state.shareTxt, 'shareTxt')}
+
 
             <OButton text='分享文本给微信好友'
               onPress={() => {
@@ -483,54 +332,10 @@ class ShouYe extends Component {
             <Text style={{
               fontSize: 20,
             }}>分享链接给微信好友接口测试：</Text>
-            <Text>要分享的链接：</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareUrl}
-              onChangeText={(text) => this.inputChange('shareUrl', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>链接的标题内容：</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareUrlTxt}
-              onChangeText={(text) => this.inputChange('shareUrlTxt', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>链接的标题图片：</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareUrlImg}
-              onChangeText={(text) => this.inputChange('shareUrlImg', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>分享链接的标题：</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareUrlTitle}
-              onChangeText={(text) => this.inputChange('shareUrlTitle', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
+            {this.ShuRu('要分享的链接：', this.state.shareUrl, 'shareUrl')}
+            {this.ShuRu('链接的标题内容：', this.state.shareUrlTxt, 'shareUrlTxt')}
+            {this.ShuRu('链接的标题图片：', this.state.shareUrlImg, 'shareUrlImg')}
+            {this.ShuRu('分享链接的标题：', this.state.shareUrlTitle, 'shareUrlTitle')}
 
             <OButton text='分享链接给微信好友'
               onPress={() => {
@@ -564,18 +369,9 @@ class ShouYe extends Component {
               fontSize: 20,
             }}>分享文本到微信朋友圈接口测试：</Text>
 
-            <Text>要分享到微信朋友圈的文本内容：</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareQuanTxt}
-              onChangeText={(text) => this.inputChange('shareQuanTxt', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
+
+            {this.ShuRu('要分享到微信朋友圈的文本内容：', this.state.shareQuanTxt, 'shareQuanTxt')}
+
 
             <OButton text='分享文本给微信朋友圈'
               onPress={() => {
@@ -605,55 +401,10 @@ class ShouYe extends Component {
             <Text style={{
               fontSize: 20,
             }}>分享文本到微信朋友圈接口测试：</Text>
-
-            <Text>分享的标题：</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareQuanTitle}
-              onChangeText={(text) => this.inputChange('shareQuanTitle', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>分享的标题内容:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareQuanTitleTxt}
-              onChangeText={(text) => this.inputChange('shareQuanTitleTxt', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>分享的标题图片:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareQuanImg}
-              onChangeText={(text) => this.inputChange('shareQuanImg', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
-            <Text>分享的Url:</Text>
-            <TextInput
-              // editable={false}
-              value={this.state.shareQuanUrl}
-              onChangeText={(text) => this.inputChange('shareQuanUrl', text)}
-              style={{
-                backgroundColor: '#aaaaaa',
-                borderWidth: 1,
-                borderRadius: 10,
-                margin: 10,
-              }}
-            ></TextInput>
+            {this.ShuRu('分享的标题：', this.state.shareQuanTitle, 'shareQuanTitle')}
+            {this.ShuRu('分享的标题内容', this.state.shareQuanTitleTxt, 'shareQuanTitleTxt')}
+            {this.ShuRu('分享的标题图片', this.state.shareQuanImg, 'shareQuanImg')}
+            {this.ShuRu('分享的Url', this.state.shareQuanUrl, 'shareQuanUrl')}
 
             <OButton text='分享链接到微信朋友圈'
               onPress={() => {
@@ -677,11 +428,6 @@ class ShouYe extends Component {
               }}
             />
           </View>
-
-
-
-
-
         </View>
       </View>
     )
@@ -692,7 +438,6 @@ class ShouYe extends Component {
 const App: () => React$Node = () => {
   return (
     <>
-
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <ScrollView
@@ -707,40 +452,10 @@ const App: () => React$Node = () => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
+    backgroundColor: '#fafafa',
   },
   body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+    backgroundColor: '#fff',
   },
 });
 
