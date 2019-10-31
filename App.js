@@ -71,7 +71,13 @@ class ShouYe extends Component {
     shareQuanTitleTxt: '分享的标题内容',
     shareQuanImg: '分享的标题图片',
     shareQuanUrl: '分享的url',
-    orderNo:''
+    orderNo: '',
+    key1: '',
+    val1: '',
+    key2: '',
+    val2: '',
+    key3: '',
+    val3: '',
   }
   inputChange(key, value) {
     this.setState({
@@ -102,6 +108,20 @@ class ShouYe extends Component {
       console.log('支付失败了', e)
     }
   }
+  // 组织参数的函数
+  KeyVal = () => {
+    let str = `orderNo=${this.state.orderNo}`
+    if (this.state.key1) {
+      str += `&${this.state.key1}=${this.state.val1}`
+    }
+    if (this.state.key2) {
+      str += `&${this.state.key2}=${this.state.val2}`
+    }
+    if (this.state.key3) {
+      str += `&${this.state.key2}=${this.state.val3}`
+    }
+    return str
+  }
   // 调起微信支付
   toPay = async function () {
     Alert.alert('支付是否成功')
@@ -127,12 +147,12 @@ class ShouYe extends Component {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `orderNo=${this.state.orderNo}`,
+      body: this.KeyVal(),
     })
       .then((response) => response.json())//将数据转成json,也可以转成 response.text、response.html
       .then((responseJson) => {//获取转化后的数据responseJson、responseText、responseHtml
         // Alert.alert(JSON.stringify(responseJson));
-        console.log('接受参数',responseJson);
+        console.log('接受参数', responseJson);
         // 检查参数
         if (!responseJson.data.partnerid) {
           Alert.alert('缺少partnerid参数,注意大小写')
@@ -231,6 +251,81 @@ class ShouYe extends Component {
               // editable={false}
               value={this.state.orderNo}
               onChangeText={(text) => this.inputChange('orderNo', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+
+            <Text>参数名1:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.key1}
+              onChangeText={(text) => this.inputChange('key1', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>参数值1:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.val1}
+              onChangeText={(text) => this.inputChange('val1', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+
+            <Text>参数名2:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.key2}
+              onChangeText={(text) => this.inputChange('key2', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>参数值2:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.val2}
+              onChangeText={(text) => this.inputChange('val2', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+
+            <Text>参数名3:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.key3}
+              onChangeText={(text) => this.inputChange('key3', text)}
+              style={{
+                backgroundColor: '#aaaaaa',
+                borderWidth: 1,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            ></TextInput>
+            <Text>参数值3:</Text>
+            <TextInput
+              // editable={false}
+              value={this.state.val3}
+              onChangeText={(text) => this.inputChange('val3', text)}
               style={{
                 backgroundColor: '#aaaaaa',
                 borderWidth: 1,
