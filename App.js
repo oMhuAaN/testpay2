@@ -111,7 +111,7 @@ class ShouYe extends Component {
       method: 'POST',//如果为GET方式，则不要添加body，否则会出错    GET/POST
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        // 'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsInNjb3BlIjpbImFsbCIsIndyaXRlIiwicmVhZCJdLCJleHAiOjE1NzQ5NDA2OTgsInVzZXJpZCI6MzEyNCwianRpIjoiZTVlY2Q2NWYtMmFlMi00NTNkLTlhNzEtZGVhMWMzMjQ5NzcwIiwiY2xpZW50X2lkIjoic3VubnkiLCJ1c2VybmFtZSI6IjE1OTU5MTUwNTUxIn0.RNxJdmeji1PuGqnEcGI-T8PXStYSX4ybWIfWPUsWlf0',
+        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsInNjb3BlIjpbImFsbCIsIndyaXRlIiwicmVhZCJdLCJleHAiOjE1NzQ5NDA2OTgsInVzZXJpZCI6MzEyNCwianRpIjoiZTVlY2Q2NWYtMmFlMi00NTNkLTlhNzEtZGVhMWMzMjQ5NzcwIiwiY2xpZW50X2lkIjoic3VubnkiLCJ1c2VybmFtZSI6IjE1OTU5MTUwNTUxIn0.RNxJdmeji1PuGqnEcGI-T8PXStYSX4ybWIfWPUsWlf0',
       },
       body: `orderNo=${this.state.orderNo}`,
     })
@@ -144,7 +144,7 @@ class ShouYe extends Component {
       method: 'POST',//如果为GET方式，则不要添加body，否则会出错    GET/POST
       headers: new Headers({
         'Content-Type': 'application/json',
-        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsImF1dGhvciI6IkxlbW8gJiBNb2ppdG8iLCJzY29wZSI6WyJhbGwiLCJ3cml0ZSIsInJlYWQiXSwiZXhwIjoxNTczMDMzNDM2LCJ1c2VyaWQiOjMxMjQsImp0aSI6ImIxYzQ5NGVjLWRjYzgtNDU2NC04MzQ5LTI2NjM3YzAzNGQxMSIsImNsaWVudF9pZCI6InN1bm55IiwidXNlcm5hbWUiOiIxNTk1OTE1MDU1MSJ9.e5X8HHuAzzabgKtwzp7kFBQrS38w3KQb_e-iVMiiaX8',
+        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsInNjb3BlIjpbImFsbCIsIndyaXRlIiwicmVhZCJdLCJleHAiOjE1NzQ5NDA2OTgsInVzZXJpZCI6MzEyNCwianRpIjoiZTVlY2Q2NWYtMmFlMi00NTNkLTlhNzEtZGVhMWMzMjQ5NzcwIiwiY2xpZW50X2lkIjoic3VubnkiLCJ1c2VybmFtZSI6IjE1OTU5MTUwNTUxIn0.RNxJdmeji1PuGqnEcGI-T8PXStYSX4ybWIfWPUsWlf0',
       }),
       body: JSON.stringify({//请求参数
         productId: parseInt(this.state.productId),
