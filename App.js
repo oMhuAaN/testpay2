@@ -45,8 +45,10 @@ class OButton extends Component {
 
 class ShouYe extends Component {
   state = {
-    url1: 'cxcx.mynatapp.cc/wxpay/createRoomOrder',
-    url2: 'cxcx.mynatapp.cc/wxpay/createMeritOrder',
+    // url1: 'cxcx.mynatapp.cc/wxpay/createRoomOrder',
+    url1: '120.24.174.188/wxpay/createRoomOrder',
+    // url2: 'cxcx.mynatapp.cc/wxpay/createMeritOrder',
+    url2: '120.24.174.188/wxpay/createMeritOrder',
     appid: 'wx604ebb6e95cc63ed',
     partnerId: 'partnerid',
     prepayId: 'prepayid',
@@ -107,11 +109,12 @@ class ShouYe extends Component {
   // 调起微信支付一
   toPay1 = async function () {
     // Alert.alert('支付是否成功')
-    fetch(`https://${this.state.url1}`, {
+    fetch(`http://${this.state.url1}`, {
       method: 'POST',//如果为GET方式，则不要添加body，否则会出错    GET/POST
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsInNjb3BlIjpbImFsbCIsIndyaXRlIiwicmVhZCJdLCJleHAiOjE1NzQ5NDA2OTgsInVzZXJpZCI6MzEyNCwianRpIjoiZTVlY2Q2NWYtMmFlMi00NTNkLTlhNzEtZGVhMWMzMjQ5NzcwIiwiY2xpZW50X2lkIjoic3VubnkiLCJ1c2VybmFtZSI6IjE1OTU5MTUwNTUxIn0.RNxJdmeji1PuGqnEcGI-T8PXStYSX4ybWIfWPUsWlf0',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'multipart/form-data',
+        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsInNjb3BlIjpbImFsbCIsIndyaXRlIiwicmVhZCJdLCJleHAiOjE1NzUwMDM0NjcsInVzZXJpZCI6MzEyNCwianRpIjoiYzFiNGFiYzgtMDg3OC00Yzk4LTlkMTQtM2Y3YWY0YjJjMzhjIiwiY2xpZW50X2lkIjoic3VubnkiLCJ1c2VybmFtZSI6IjE1OTU5MTUwNTUxIn0.Qc3QNq7ExpikmX9vaQcPYgZguO8JT6sTByvV3A1siW8',
       },
       body: `orderNo=${this.state.orderNo}`,
     })
@@ -139,12 +142,12 @@ class ShouYe extends Component {
   // 调起微信支付二
   toPay2 = async function () {
     // Alert.alert('支付是否成功')
-    fetch(`https://${this.state.url2}`, {
+    fetch(`http://${this.state.url2}`, {
       // credentials: 'include',
       method: 'POST',//如果为GET方式，则不要添加body，否则会出错    GET/POST
       headers: new Headers({
         'Content-Type': 'application/json',
-        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsInNjb3BlIjpbImFsbCIsIndyaXRlIiwicmVhZCJdLCJleHAiOjE1NzQ5NDA2OTgsInVzZXJpZCI6MzEyNCwianRpIjoiZTVlY2Q2NWYtMmFlMi00NTNkLTlhNzEtZGVhMWMzMjQ5NzcwIiwiY2xpZW50X2lkIjoic3VubnkiLCJ1c2VybmFtZSI6IjE1OTU5MTUwNTUxIn0.RNxJdmeji1PuGqnEcGI-T8PXStYSX4ybWIfWPUsWlf0',
+        'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsInNjb3BlIjpbImFsbCIsIndyaXRlIiwicmVhZCJdLCJleHAiOjE1NzUwMDM0NjcsInVzZXJpZCI6MzEyNCwianRpIjoiYzFiNGFiYzgtMDg3OC00Yzk4LTlkMTQtM2Y3YWY0YjJjMzhjIiwiY2xpZW50X2lkIjoic3VubnkiLCJ1c2VybmFtZSI6IjE1OTU5MTUwNTUxIn0.Qc3QNq7ExpikmX9vaQcPYgZguO8JT6sTByvV3A1siW8',
       }),
       body: JSON.stringify({//请求参数
         productId: parseInt(this.state.productId),
