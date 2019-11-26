@@ -112,8 +112,8 @@ class ShouYe extends Component {
     fetch(`http://${this.state.url1}`, {
       method: 'POST',//如果为GET方式，则不要添加body，否则会出错    GET/POST
       headers: {
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        // 'Content-Type': 'multipart/form-data',
         'Authorization':'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxNTk1OTE1MDU1MSIsInNjb3BlIjpbImFsbCIsIndyaXRlIiwicmVhZCJdLCJleHAiOjE1NzUwMDM0NjcsInVzZXJpZCI6MzEyNCwianRpIjoiYzFiNGFiYzgtMDg3OC00Yzk4LTlkMTQtM2Y3YWY0YjJjMzhjIiwiY2xpZW50X2lkIjoic3VubnkiLCJ1c2VybmFtZSI6IjE1OTU5MTUwNTUxIn0.Qc3QNq7ExpikmX9vaQcPYgZguO8JT6sTByvV3A1siW8',
       },
       body: `orderNo=${this.state.orderNo}`,
